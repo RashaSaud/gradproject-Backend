@@ -11,7 +11,7 @@ const logIn = async (req, res) => {
       const check = await bcrypt.compare(password, user.password);
       if (check === true) {
         const payload = { userId: user._id, userName: user.name };
-        const token = jwt.sign(payload, "AAA");
+        const token = jwt.sign(payload, "ABC");
         res.status(200).json({ token });
       } else {
         res.status(403).json("wrong PassWord!");
@@ -22,6 +22,72 @@ const logIn = async (req, res) => {
   } catch (error) {
     res.send(error);
   }
-};
 
-module.exports = { logIn };
+}
+const admin = async(req,res)=>{
+  let {email , password} = req.body
+  try {
+    const admin = await userModel.findOne({email})
+    if(admin){
+      const check = await bcrypt.compare(password, admin.password);
+if (check== true){
+  const isAdmin = await userModel.findOne({isAdmin})
+    const payload = { userId: admin._id, userName: admin.name };
+    const token = jwt.sign(payload, "ABC");
+    res.status(200).json({ token ,isAdmin:true});
+  }
+}
+  
+
+  }catch(err){
+    res.send(err);
+
+  }
+}
+// const admin = async(res,req)=> {
+//   const valid = jwt.verify(token, "ABC");
+//   if (!token) {
+
+//     res.status(401).send("No User"); } 
+//     else {
+//    try {
+//        const valid = verify(token, "ABC");
+//        req.user = valid;
+//        const user = await userModel.findOne({isAdmin});
+//        if (req.user && user.isAdmin == true) {
+        
+//        }
+//    } catch (err) {
+//         res.status(401).send("Admin token is not exists");
+//    }
+//   }
+//  }
+
+// const admin = async (req,res)=>{
+//   let {email , password} = req.body
+//   try{
+//     const admin = await userModel.findOne({email:email})
+//     if(admin){
+//       const check = await bcrypt.compare(password, admin.password);
+//       // const isAdmin = await userModel.findOne({isAdmin})
+//       if (req.body.email && admin.email == true) {
+//         const payload = { email: admin.email, userName: admin.name };
+//         const token = jwt.sign(payload, "ABC");
+//         res.status(200).json({ token });
+//       } else {
+//         res.status(403).json("wrong passWord!!!");
+//       }
+//     } else {
+//       res.status(404).json("wrong Email!");
+//     }
+//   } catch (error) {
+//     res.send(error);
+//   }
+//     }
+
+  
+
+
+
+
+module.exports = { logIn , admin};
