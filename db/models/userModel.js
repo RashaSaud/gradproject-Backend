@@ -6,9 +6,11 @@ const userModel = new mongoose.Schema({
     password: { type: String },
     isAdmin: {
         type: Boolean,
-        required: true,
+        // required: true,
         default: false,
-      }
+      },
+
+    
   });
   
   module.exports = mongoose.model("userModel", userModel);

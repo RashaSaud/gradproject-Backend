@@ -10,40 +10,43 @@ const logIn = async (req, res) => {
     if (user) {
       const check = await bcrypt.compare(password, user.password);
       if (check === true) {
-        const payload = { userId: user._id, userName: user.name };
+        const payload = { userId: user._id, userName: user.name ,isAdmin:user.isAdmin };
         const token = jwt.sign(payload, "ABC");
-        res.status(200).json({ token });
+        
+        res.status(200).json({ token,isAdmin:user.isAdmin  });
       } else {
         res.status(403).json("wrong PassWord!");
       }
     } else {
       res.status(404).json("wrong Email!");
     }
+  
+    
   } catch (error) {
     res.send(error);
   }
+}
 
-}
-const admin = async(req,res)=>{
-  let {email , password} = req.body
-  try {
-    const admin = await userModel.findOne({email})
-    if(admin){
-      const check = await bcrypt.compare(password, admin.password);
-if (check== true){
-  const isAdmin = await userModel.findOne({isAdmin})
-    const payload = { userId: admin._id, userName: admin.name };
-    const token = jwt.sign(payload, "ABC");
-    res.status(200).json({ token ,isAdmin:true});
-  }
-}
+// const admin = async(req,res)=>{
+//   let {email , password} = req.body
+//   try {
+//     const admin = await userModel.findOne({email})
+//     if(admin){
+//       const check = await bcrypt.compare(password, admin.password);
+// if (check== true){
+//   const isAdmin = await userModel.findOne({isAdmin})
+//     const payload = { userId: admin._id, userName: admin.name };
+//     const token = jwt.sign(payload, "ABC");
+//     res.status(200).json({ token ,isAdmin:true});
+//   }
+// }
   
 
-  }catch(err){
-    res.send(err);
+//   }catch(err){
+//     res.send(err);
 
-  }
-}
+//   }
+// }
 // const admin = async(res,req)=> {
 //   const valid = jwt.verify(token, "ABC");
 //   if (!token) {
@@ -87,7 +90,30 @@ if (check== true){
 
   
 
+// const admin =async (req, res) => { 
+//   let userData = req.body;
+//   userModel.findOne({ email: userData.email }, (error, user) => {
+//     if (error) {
+//       console.log(error);
+//     } else {
+//       if (!user) {
+//         res.status(403).send('Invalid email');
+//       } else
+//       if (user.password !== userData.password) {
+//         res.status(403).send('Invalid password')
+//       } else {
+//         if (user.isAdmin) { 
+//           console.log('admin'); 
+//           res.status(200).send(user.isAdmin)         
+//         }
+//         let payload = { userId: user._id };
+//         let token = jwt.sign(payload, 'ABC');
+//         res.status(200).send({ token });
+//       }
+//   }
+//   })
+// } 
 
 
 
-module.exports = { logIn , admin};
+module.exports = { logIn };
