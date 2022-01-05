@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const cartItemModel = require("../../db/models/cartItemModel");
 const userModel  = require("../../db/models/userModel")
 
 const newUser = async(req, res) => {
@@ -7,7 +8,13 @@ const newUser = async(req, res) => {
       password = await bcrypt.hash(password,10);
       const registered = new userModel({ name, email, password ,isAdmin});
       const response = await registered.save();
-      res.status(201).json(response);
+      console.log(response)
+
+      // const newCart= new  cartItemModel({client:response._id, itemId: [{  prodect:{}, quantity:1  }]})
+      // const response2= await newCart.save();
+
+
+      res.status(201).json(response)
 
   } catch (error) {
       res.send(error)

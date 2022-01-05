@@ -11,13 +11,35 @@ const getMenu = async (req,res)=>{
           res.send(error)
       }
   }
+
+  const getOneItem = async(req,res)=>{
+    const id = req.params.id;
+    // user = req.token.userId
+    // console.log(user,"this is useeeeerrrrr:)")
+    try{
+
+      const oneItem = await menuModel.findById({_id:id})
+      // .populate("user")
+      // console.log(user,"tttst")
+      res.status(201).json(oneItem)
+      console.log({oneItem},"thhissssssss item")
+    }catch(err){
+      res.send(err)
+    }
+  }
+
+
+
 const menuPost = async (req, res)=>{
-    const { foodName, foodImg , foodDescription , foodPrice } = req.body;
+    const { foodName, foodImg , foodDescription , foodPrice ,MiniImg1,MiniImg2} = req.body;
     const newMenu = new menuModel({
         Foodname:foodName, 
         FoodImg:foodImg,
+        miniImg1:MiniImg1,
+        miniImg2:MiniImg2,
         FoodDescription:foodDescription,
         FoodPrice:foodPrice,
+        
         
     
     })
@@ -43,21 +65,6 @@ const deleteItem = async (req, res) => {
     } 
   };
 
-//   const updateItem = async(req,res)=>{
-//       const id = req.params.id
-//      const {NewName ,NewImg,NewDes,NewPrice}=req.body
-
-
-//       try{
-// const updateItem = await menuModel.findOneAndUpdate({_id:id,Foodname:NewName,
-// FoodImg:NewImg,FoodDescription:NewDes,FoodPrice:NewPrice})
-// // console.log(updateItem,"hhhi")
-// res.status(200).json([updateItem ,"updated"])
-//       }
-//       catch(err){
-// res.send(err,"error")
-//       }
-//   }
 
  
 const updateItem = async (req, res) => {
@@ -70,7 +77,7 @@ const updateItem = async (req, res) => {
             FoodImg:newImg,
             FoodDescription:newDes,
             FoodPrice:newPrice},
-        { new: true }
+    {new:true}
       );
       res.status(200).json(response);
     } catch (error) {
@@ -79,4 +86,4 @@ const updateItem = async (req, res) => {
   };
   
 
-module.exports = {getMenu, menuPost ,deleteItem,updateItem}
+module.exports = {getMenu, menuPost ,deleteItem,updateItem,getOneItem}
