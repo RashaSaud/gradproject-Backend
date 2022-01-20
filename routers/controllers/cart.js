@@ -107,29 +107,17 @@ try{
 }catch(err){
   res.send(err)
 }
-  // if(del.itemId.quantity >=1){
-  //   let x = del.quantity - 1;
-  //   console.log(x, "xxxxx");
-  //   console.log(foundUser, "usssssser");
-  //   const updaetItem = await cartItemModel.findOneAndUpdate(
-  //     { client: client,itemId: id, },
-  //     { quantity: x },
-  //     {new:true}
-  //   );
-  //   console.log(updaetItem, "updaetItem");
 
-  //   res.status(201).json(updaetItem);
-
-  // }
-
-  
-  // else{
-  //   const delet = await cartItemModel.findOneAndDelete({
-  //     client: client,
-  //     itemId: id,
-  //   });
-  //   res.status(200).json([delet,"deleted"]);
-  // }
 }
+  const clearCart= async(req,res)=>{
+    const client = req.token.userId
+    try{
+    const clearAllCart = await cartItemModel.findOne({client}).deleteMany({})
+    res.status(201).json(clearAllCart)
+    }catch(err){
+res.send(err)
+    }
+  }
 
-module.exports = { getCart, addItemToCart,deleteItem,deleteAllItem };
+
+module.exports = { getCart, addItemToCart,deleteItem,deleteAllItem,clearCart };

@@ -5,7 +5,6 @@ let menuModel = new mongoose.Schema({
     FoodImg: { type: String},
     miniImg1:{type:String},
     miniImg2:{type:String},
-    miniImg3:{type:String},
     FoodDescription: { type: String },
     FoodPrice:{type:String},
     client:{type: mongoose.Schema.Types.ObjectId, ref:"userModel"},

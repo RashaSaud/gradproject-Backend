@@ -14,13 +14,11 @@ const getMenu = async (req,res)=>{
 
   const getOneItem = async(req,res)=>{
     const id = req.params.id;
-    // user = req.token.userId
-    // console.log(user,"this is useeeeerrrrr:)")
+  
     try{
 
       const oneItem = await menuModel.findById({_id:id})
-      // .populate("user")
-      // console.log(user,"tttst")
+ 
       res.status(201).json(oneItem)
       console.log({oneItem},"thhissssssss item")
     }catch(err){
@@ -69,7 +67,7 @@ const deleteItem = async (req, res) => {
  
 const updateItem = async (req, res) => {
     const id = req.params.id;
-    const { newName,newImg,newDes,newPrice } = req.body;
+    const { newName,newImg,newDes,newPrice,newimg1,newimg2 } = req.body;
     try {
       const response = await menuModel.findOneAndUpdate(
         { _id: id },
@@ -77,6 +75,7 @@ const updateItem = async (req, res) => {
             FoodImg:newImg,
             FoodDescription:newDes,
             FoodPrice:newPrice},
+        
     {new:true}
       );
       res.status(200).json(response);
